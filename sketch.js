@@ -8,7 +8,8 @@ class Ball {
         this.gray = gray;
     }
 
-    display(col) {
+    display(col) 
+    {
         if (col == 1) {
             fill(this.gray, 0, 0);
         } else if (col == 2) {
@@ -21,7 +22,8 @@ class Ball {
         circle(this.x, this.y, this.radius);
     }
 
-    move(acc) {
+    move(acc) 
+    {
         this.x += this.speed_x;
         this.y += this.speed_y;
         this.gray += acc;
@@ -33,51 +35,41 @@ class Ball {
         }
         if (this.y >= (height - this.radius) || this.y <= this.radius) {
             this.speed_y *= -1;
-            /*
-            ++this.radius;
-            if (this.radius > 20) {
-                this.radius = 5;
-            }
-            */
         }
     }
-
 }
-
 const r = 5;
 let green_balls = [];
 let flash_balls = [];
 let N = 6500;
 
-function setup() {
+function setup() 
+{
     createCanvas(windowWidth, windowHeight);
     background(0);
-    frameRate(30);
+    frameRate(1000);
     let Ux = width / 2 //random(2, 10);
     let Uy = height / 2 //random(2, 10);
     for (let j = 0; j < N / 4; ++j) {
-        green_balls[j] = new Ball(Ux - 1, Uy - 1, r, 4 - (16 * j / N), 16 * j / N, 0);
-        flash_balls[j] = new Ball(Ux - 1, Uy - 1, r, r * cos(2 * Math.PI * j / N), r * sin(2 * Math.PI * j / N), 0);
-        // flash_balls[j] = new Ball(Ux - 1, Uy - 1, r, 4 - (16 * j / N), 16 * j / N, 0);
+        green_balls[j] = new Ball(Ux, Uy, r, 4 - (16 * j / N), 16 * j / N, 0);
+        flash_balls[j] = new Ball(Ux + 1, Uy + 1, r, 4 - (16 * j / N), 16 * j / N, 0);
     }
     for (let j = N / 4; j < N / 2; ++j) {
-        green_balls[j] = new Ball(Ux - 1, Uy + 1, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
-        flash_balls[j] = new Ball(Ux - 1, Uy + 1, r, -r * cos(2 * Math.PI * (j - (N / 4)) / N), r * sin(2 * Math.PI * (j - (N / 4)) / N), 0);
-        // flash_balls[j] = new Ball(Ux - 1, Uy + 1, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+        green_balls[j] = new Ball(Ux, Uy, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+        flash_balls[j] = new Ball(Ux - 1, Uy - 1, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
     }
     for (let j = N / 2; j < 3 * (N / 4); ++j) {
-        green_balls[j] = new Ball(Ux + 1, Uy - 1, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
-        flash_balls[j] = new Ball(Ux + 1, Uy - 1, r, -r * cos(2 * Math.PI * (j - (N / 2)) / N), -r * sin(2 * Math.PI * (j - (N / 2)) / N), 0);
-        // flash_balls[j] = new Ball(Ux + 1, Uy - 1, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+        green_balls[j] = new Ball(Ux, Uy, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+        flash_balls[j] = new Ball(Ux + 1, Uy - 1, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
     }
     for (let j = 3 * (N / 4); j < N; ++j) {
-        green_balls[j] = new Ball(Ux + 1, Uy - 1, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
-        flash_balls[j] = new Ball(Ux + 1, Uy + 1, r, r * cos(2 * Math.PI * (j - (3 * N / 4)) / N), -r * sin(2 * Math.PI * (j - (3 * N / 4)) / N), 0);
-        // flash_balls[j] = new Ball(Ux + 1, Uy + 1, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+        green_balls[j] = new Ball(Ux, Uy, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+        flash_balls[j] = new Ball(Ux - 1, Uy + 1, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
     }
 }
 
-function draw() {
+function draw() 
+{
     for (let i = 0; i < N; i++) {
         green_balls[i].display(2);
         green_balls[i].move(10);
