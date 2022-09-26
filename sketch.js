@@ -14,7 +14,7 @@ class Ball {
         } else if (opt == 2) {
             fill(0, this.gray, this.gray - 102);
         } else if (opt == 3) {
-            fill(0, 0, this.gray);
+            fill(0, 0, this.gray - 51);
         } else if (opt == 4) {
             fill(this.gray - 51, this.gray, 0);
         }else {
@@ -91,7 +91,7 @@ function draw()
 function keyPressed() {
     if (keyCode === 67 || keyCode === 99) {
         flash_val = flash_val == 1 ? 3 : 1;
-        green_val = green_val == 2 ? 4 : 2;
+        green_val = green_val == 4 ? 2 : 4;
     } else if (keyCode === 32) {
         for (let i = 0; i < N; ++i) {
             green_balls[i].speed_x *= -1;
@@ -99,5 +99,8 @@ function keyPressed() {
             green_balls[i].speed_y *= -1;
             flash_balls[i].speed_y *= -1;
         }
+    } else if (keyCode === BACKSPACE) {
+        flash_val = flash_val == 1 || flash_val == 3 ? 5 : 3;
+        green_val = green_val == 4 || green_val == 2 ? 5 : 2;
     }
 }
