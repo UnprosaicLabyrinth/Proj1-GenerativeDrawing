@@ -9,6 +9,7 @@ class Ball {
     }
 
     display(opt) {
+        noStroke();
         // Case 0: Greyscale
         if (opt == 0) {
             fill(this.gray, this.gray, this.gray, 200);
@@ -19,7 +20,7 @@ class Ball {
         }
         // Case 2: Flash blue
         else if (opt == 2) {
-            fill(0, 0, this.gray);
+            fill(0, 0, this.gray, 150);
         }
         // Case 3: Yellowish green
         else if (opt == 3) {
@@ -27,7 +28,7 @@ class Ball {
         }
         // Case 4: Flash red
         else if (opt == 4) {
-            fill(this.gray - 51, 0, 0);
+            fill(this.gray - 51, 0, 0, 150);
         }
         // Default: Random grayscale
         else {
@@ -55,46 +56,51 @@ class Ball {
     }
 }
 
-const r = 4; // radius of the drawing agents
+const r = 6; // radius of the drawing agents
 let flash_val = 0; // flash color
 let green_val = 0; // agent color
 let green_balls = [];
 let flash_balls = [];
+let play = false
 const N = 10000; // no. of drawing and flash agents
 
 function setup() 
 {
     createCanvas(windowWidth, windowHeight);
     background(0);
-    let Cx = width / 2
-    let Cy = height / 2
-    for (let j = 0; j < N / 4; ++j) {
-        green_balls[j] = new Ball(Cx, Cy, r, 4 - (16 * j / N), 16 * j / N, 0);
-        flash_balls[j] = new Ball(Cx / 2, Cy, r, 4 - (16 * j / N), 16 * j / N, 0);
-    }
-    for (let j = N / 4; j < N / 2; ++j) {
-        green_balls[j] = new Ball(Cx, Cy, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
-        flash_balls[j] = new Ball(3 * Cx / 2, Cy, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
-    }
-    for (let j = N / 2; j < 3 * (N / 4); ++j) {
-        green_balls[j] = new Ball(Cx, Cy, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
-        flash_balls[j] = new Ball(Cx / 2, Cy, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
-    }
-    for (let j = 3 * (N / 4); j < N; ++j) {
-        green_balls[j] = new Ball(Cx, Cy, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
-        flash_balls[j] = new Ball(3 * Cx / 2, Cy, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
-    }
+    frameRate(20)
 }
 
 function draw() 
 {
-    for (let i = 0; i < N; i++) {
-        green_balls[i].display(green_val);
-        green_balls[i].move(10);
+    if (mouseIsPressed) {
+        background(0)
+        for (let j = 0; j < N / 4; ++j) {
+            green_balls[j] = new Ball(mouseX, mouseY, r, 4 - (16 * j / N), 16 * j / N, 0);
+            flash_balls[j] = new Ball(3 * mouseX / 2, mouseY, r, 4 - (16 * j / N), 16 * j / N, 0);
+        }
+        for (let j = N / 4; j < N / 2; ++j) {
+            green_balls[j] = new Ball(mouseX, mouseY, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+            flash_balls[j] = new Ball(mouseX / 2, mouseY, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+        }
+        for (let j = N / 2; j < 3 * (N / 4); ++j) {
+            green_balls[j] = new Ball(mouseX, mouseY, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+            flash_balls[j] = new Ball(3 * mouseX / 2, mouseY, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+        }
+        for (let j = 3 * (N / 4); j < N; ++j) {
+            green_balls[j] = new Ball(mouseX, mouseY, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+            flash_balls[j] = new Ball(mouseX / 2, mouseY, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+        }
+        play = true;
+    }
+    if (play) {
+        for (let i = 0; i < N; i++) {
+            green_balls[i].display(green_val);
+            green_balls[i].move(10);
 
-        flash_balls[i].display(flash_val);
-        flash_balls[i].move(flash_balls[i].gray + 1)
-
+            flash_balls[i].display(flash_val);
+            flash_balls[i].move(flash_balls[i].gray + 1)
+        }
     }
 }
 
@@ -109,8 +115,8 @@ function keyPressed() {
         green_val = green_val == 1 ? 3 : 1;
         flash_val = flash_val == 2 ? 4 : 2;
     } 
-    // direction reversed when space pressed
-    else if (keyCode === 32) {
+    // direction reversed when 'r' pressed
+    else if (keyCode === 82 || keyCode === 114) {
         for (let i = 0; i < N; ++i) {
             green_balls[i].speed_x *= -1;
             flash_balls[i].speed_x *= -1;
@@ -118,9 +124,36 @@ function keyPressed() {
             flash_balls[i].speed_y *= -1;
         }
     } 
-    // b&w when backspace pressed
-    else if (keyCode === BACKSPACE) {
+    // b&w when 'b' pressed
+    else if (keyCode === 66 || keyCode === 98) {
         green_val = 0;
         flash_val = 0;
+    }
+    // reset when backspace pressed
+    else if (keyCode === BACKSPACE) {
+        background(0)
+        play = true
+        let Cx = width / 2
+        let Cy = height / 2
+        for (let j = 0; j < N / 4; ++j) {
+            green_balls[j] = new Ball(Cx, Cy, r, 4 - (16 * j / N), 16 * j / N, 0);
+            flash_balls[j] = new Ball(3 * Cx / 2, Cy, r, 4 - (16 * j / N), 16 * j / N, 0);
+        }
+        for (let j = N / 4; j < N / 2; ++j) {
+            green_balls[j] = new Ball(Cx, Cy, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+            flash_balls[j] = new Ball(Cx / 2, Cy, r, -4 + (16 * (j - (N / 4)) / N), -16 * (j - (N / 4)) / N, 0);
+        }
+        for (let j = N / 2; j < 3 * (N / 4); ++j) {
+            green_balls[j] = new Ball(Cx, Cy, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+            flash_balls[j] = new Ball(3 * Cx / 2, Cy, r, 4 - (16 * (j - (N / 2)) / N), -16 * (j - (N / 2)) / N, 0);
+        }
+        for (let j = 3 * (N / 4); j < N; ++j) {
+            green_balls[j] = new Ball(Cx, Cy, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+            flash_balls[j] = new Ball(Cx / 2, Cy, r, -4 + (16 * (j - (3 * N / 4)) / N), 16 * (j - (3 * N / 4)) / N, 0);
+        }
+    }
+    // pause when space pressed
+    else if (keyCode === 32) {
+        play = play ? false : true;
     }
 }
