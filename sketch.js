@@ -66,7 +66,6 @@ function setup()
 {
     createCanvas(windowWidth, windowHeight);
     background(0);
-    frameRate(30);
     let Cx = width / 2
     let Cy = height / 2
     for (let j = 0; j < N / 4; ++j) {
