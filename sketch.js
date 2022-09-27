@@ -9,19 +9,30 @@ class Ball {
     }
 
     display(opt) {
-        if (opt == 1) {
-            fill(this.gray - 51, 0, 0);
-        } else if (opt == 2) {
-            fill(0, this.gray, this.gray - 102);
-        } else if (opt == 3) {
-            fill(0, 0, this.gray);
-        } else if (opt == 4) {
-            fill(this.gray - 51, this.gray, 0);
-        } else if (opt == 5) {
-            fill(random(256));
-        } else {
+        // Case 0: Greyscale
+        if (opt == 0) {
             fill(this.gray, this.gray, this.gray, 200);
         }
+        // Case 1: Bluish green
+        else if (opt == 1) {
+            fill(0, this.gray, this.gray - 102);
+        }
+        // Case 2: Flash blue
+        else if (opt == 2) {
+            fill(0, 0, this.gray);
+        }
+        // Case 3: Yellowish green
+        else if (opt == 3) {
+            fill(this.gray - 51, this.gray, 0);
+        }
+        // Case 4: Flash red
+        else if (opt == 4) {
+            fill(this.gray - 51, 0, 0);
+        }
+        // Default: Random grayscale
+        else {
+            fill(random(256));
+        } 
         circle(this.x, this.y, this.radius);
     }
 
@@ -31,13 +42,11 @@ class Ball {
         if (this.x >= (width - this.radius) || this.x <= this.radius) {
             this.speed_x *= -1;
         }
-
         // changing y
         this.y += this.speed_y;
         if (this.y >= (height - this.radius) || this.y <= this.radius) {
             this.speed_y *= -1;
         }
-
         // changing shade
         this.gray += val;
         if (this.gray > 255) {
@@ -46,12 +55,12 @@ class Ball {
     }
 }
 
-const r = 4;
-let flash_val = 6;
-let green_val = 6;
+const r = 4; // radius of the drawing agents
+let flash_val = 0; // flash color
+let green_val = 0; // agent color
 let green_balls = [];
 let flash_balls = [];
-const N = 10000;
+const N = 10000; // no. of drawing and flash agents
 
 function setup() 
 {
@@ -90,23 +99,29 @@ function draw()
     }
 }
 
+//
+// User interaction
+//
 function keyPressed() {
+    // color added when 'c' pressed
+    // color alternated between cool and warm themes
+    // when pressed after that
     if (keyCode === 67 || keyCode === 99) {
-        flash_val = flash_val == 3 ? 1 : 3;
-        green_val = green_val == 2 ? 4 : 2;
-    } else if (keyCode === 32) {
+        green_val = green_val == 1 ? 3 : 1;
+        flash_val = flash_val == 2 ? 4 : 2;
+    } 
+    // direction reversed when space pressed
+    else if (keyCode === 32) {
         for (let i = 0; i < N; ++i) {
             green_balls[i].speed_x *= -1;
             flash_balls[i].speed_x *= -1;
             green_balls[i].speed_y *= -1;
             flash_balls[i].speed_y *= -1;
         }
-    } else if (keyCode === BACKSPACE) {
-        for (let i = 0; i < N; ++i) {
-            flash_balls[i].gray = 0;
-            green_balls[i].gray = 100;
-        }
-        flash_val = 6;
-        green_val = 6;
+    } 
+    // b&w when backspace pressed
+    else if (keyCode === BACKSPACE) {
+        green_val = 0;
+        flash_val = 0;
     }
 }
