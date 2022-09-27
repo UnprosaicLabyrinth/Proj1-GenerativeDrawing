@@ -1,2 +1,6 @@
 # Proj1-GenerativeDrawing
-Algorithmic visuals which continue to draw themselves as long as the user is on the page.
+From three points on the screen, which are a fourth of the canvas' width apart, many drawing agents (circles of small radii) move radially outwards and undergo regular reflections each time they encounter an edge of the canvas. The drawing agents, by default, are colored using a grayscale color. The grayscale color of the drawing agents emanating from the center of the canvas increases by 10 until 255 at which points it resets back to 0. The grayscale color of the drawing agents emanating from the other two points increases by a factor of their current grayscale color, hence giving a flashing effect as they draw. By setting the number of central drawing agents as well as flash agents to 10000, the genrative drawing simulates a flocking pattern.
+User interaction:-
+Pressing 'c' adds color to the drawing agents–a shade of green to the central drawing agents and blue or red to the flash agents. Consecutive 'c' key presses alternates between red and blue colors of the flash agents and two different shades of green for the central drawing agents, essentially alternating between cool and warm color themes.
+Pressing 'space' reverses the direction of the drawing, essentially "undoing" the generative pattern. 
+Pressing 'backspace' returns the pettern to grayscale color.
